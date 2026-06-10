@@ -5,3 +5,5 @@ uploads/
 
 model_files/disease_embeddings.npy
 model_files/disease_index.faiss
+model_files/leaf_detector_v2.pth
+model_files/plant_disease_model.pth
