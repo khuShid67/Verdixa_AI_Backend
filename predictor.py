@@ -95,12 +95,8 @@ def predict_leaf(image_path):
     # Default
     status = "Known Disease"
 
-    if "___" in prediction:
-        plant_name, disease_name = prediction.split("___", 1)
+    final_prediction = prediction.strip()
 
-        final_prediction = disease_name.replace("_", " ")
-    else:
-        final_prediction = prediction
 
     # Random object / non-leaf
     # Suspicious image

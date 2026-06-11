@@ -2,27 +2,28 @@ import pandas as pd
 
 df = pd.read_excel("plant_disease_recommendations_detailed.xlsx")
 df = df.fillna("")
+
+def normalize(text):
+    return str(text).strip().lower()
+
 recommendations = {}
 
 for _, row in df.iterrows():
+    disease = normalize(row["Disease"])
 
-    recommendations[row["Disease"]] = {
-        "plant": str(row["Plant"]) if pd.notna(row["Plant"]) else "",
-        "status": str(row["Status"]) if pd.notna(row["Status"]) else "",
-        "severity": str(row["Severity"]) if pd.notna(row["Severity"]) else "",
-        "description": str(row["Description"]) if pd.notna(row["Description"]) else "",
-        "symptoms": str(row["Symptoms"]) if pd.notna(row["Symptoms"]) else "",
-        "organic_treatment": str(row["Organic Treatment"]) if pd.notna(row["Organic Treatment"]) else "",
-        "chemical_treatment": str(row["Chemical Treatment"]) if pd.notna(row["Chemical Treatment"]) else "",
-        "prevention": str(row["Prevention"]) if pd.notna(row["Prevention"]) else "",
+    recommendations[disease] = {
+        "plant": str(row["Plant"]),
+        "status": str(row["Status"]),
+        "severity": str(row["Severity"]),
+        "description": str(row["Description"]),
+        "symptoms": str(row["Symptoms"]),
+        "organic_treatment": str(row["Organic Treatment"]),
+        "chemical_treatment": str(row["Chemical Treatment"]),
+        "prevention": str(row["Prevention"]),
     }
 
-
 def get_recommendation(disease_name):
-
     return recommendations.get(
-        disease_name,
-        {
-            "description": "No recommendation available."
-        }
+        normalize(disease_name),
+        {"description": "No recommendation available."}
     )
