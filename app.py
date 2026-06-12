@@ -84,20 +84,8 @@ async def predict(
     temp_path = None
 
     try:
-        is_logged_in = user_email is not None
-
-        # ---------------- GUEST LIMIT ----------------
-        if not is_logged_in:
-            scan_count = db.query(DetectionHistory).filter(
-                DetectionHistory.user_email == "guest"
-            ).count()
-
-            if scan_count >= 3:
-                return {
-                    "success": False,
-                    "message": "Free limit reached",
-                    "used_scans": scan_count
-                }
+        # ✔ FIXED: safe login check
+        is_logged_in = user_email is not None and user_email != ""
 
         # ---------------- SAVE IMAGE ----------------
         filename = f"{uuid.uuid4()}_{file.filename}"
@@ -126,13 +114,13 @@ async def predict(
         result["recommendation"] = recommendation
         result["success"] = True
 
-        # ---------------- SAVE ONLY BASIC DATA ----------------
+        # ---------------- SAVE ONLY FOR LOGGED-IN USERS ----------------
         if is_logged_in:
             db.add(DetectionHistory(
                 user_email=user_email,
                 disease_name=disease_name,
                 confidence=confidence,
-                image_path=filename   # IMPORTANT: stored without deleting file
+                image_path=filename
             ))
             db.commit()
 
@@ -140,8 +128,6 @@ async def predict(
 
     finally:
         db.close()
-        # ❌ REMOVED: file deletion (was causing empty uploads folder & 404)
-        # Keeping file is required for Flutter history + image loading
 
 
 # ---------------- HISTORY ----------------
@@ -149,6 +135,10 @@ async def predict(
 def get_history(user_email: str):
     db = SessionLocal()
     try:
+        # ✔ FIXED: prevent empty access
+        if not user_email:
+            return []
+
         records = db.query(DetectionHistory).filter(
             DetectionHistory.user_email == user_email
         ).order_by(DetectionHistory.id.desc()).all()
