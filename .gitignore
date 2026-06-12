@@ -2,6 +2,7 @@ venv/
 __pycache__/
 uploads/
 *.pyc
+.env 
 
 model_files/disease_embeddings.npy
 model_files/disease_index.faiss
