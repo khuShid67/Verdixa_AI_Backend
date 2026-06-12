@@ -16,14 +16,31 @@ for _, row in df.iterrows():
         "status": str(row["Status"]),
         "severity": str(row["Severity"]),
         "description": str(row["Description"]),
-        "symptoms": str(row["Symptoms"]),
+
+        # ✅ FIX: convert to list
+        "symptoms": [
+            s.strip()
+            for s in str(row["Symptoms"]).split(",")
+            if s.strip()
+        ],
+
         "organic_treatment": str(row["Organic Treatment"]),
         "chemical_treatment": str(row["Chemical Treatment"]),
         "prevention": str(row["Prevention"]),
     }
 
+
 def get_recommendation(disease_name):
-    return recommendations.get(
-        normalize(disease_name),
-        {"description": "No recommendation available."}
-    )
+    key = normalize(disease_name)
+
+    return recommendations.get(key, {
+        "plant": "",
+        "status": "Unknown",
+        "severity": "Unknown",
+        "description": "No recommendation available",
+
+        "symptoms": [],
+        "organic_treatment": "Not available",
+        "chemical_treatment": "Not available",
+        "prevention": "Not available"
+    })

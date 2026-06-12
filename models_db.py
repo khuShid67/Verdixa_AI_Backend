@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, Float, Text, DateTime
+from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -10,7 +11,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, nullable=False)
-    password = Column(String(255), nullable=False)  # simplified for now
+    password = Column(String(255), nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
 
 
@@ -18,17 +19,13 @@ class User(Base):
 class DetectionHistory(Base):
     __tablename__ = "detection_history"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
 
-    image_path = Column(String(255))
+    user_email = Column(String(255))  # MUST exist
 
     disease_name = Column(String(255))
-    confidence = Column(String(50))
+    confidence = Column(Float)
+    status = Column(String(100))
 
-    status = Column(String(50))
-    severity = Column(String(50))
-
-    recommendation = Column(String(500))  # store description
-    advice = Column(String(500))          # store treatment
-
-    created_at = Column(TIMESTAMP, server_default=func.now())
+    image_path = Column(String(255))
+    created_at = Column(DateTime, default=datetime.utcnow)
