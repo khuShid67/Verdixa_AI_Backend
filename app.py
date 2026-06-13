@@ -12,7 +12,9 @@ from models_db import DetectionHistory, User
 from leaf_detector import is_leaf
 from predictor import predict_leaf
 from recommendations import get_recommendation
+from download_models import download_models
 
+download_models()
 
 # ---------------- APP ----------------
 app = FastAPI(title="Verdixa AI")
