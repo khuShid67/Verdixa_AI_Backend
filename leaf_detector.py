@@ -2,9 +2,7 @@ import torch
 import timm
 from PIL import Image
 from torchvision import transforms
-from download_models import download_models
 
-download_models()
 DEVICE = "cpu"
 
 checkpoint = torch.load(
