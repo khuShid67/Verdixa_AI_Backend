@@ -25,7 +25,7 @@ leaf_model.eval()
 classes = checkpoint["class_names"]
 
 transform = transforms.Compose([
-    transforms.Resize((260,260)),
+    transforms.Resize((256,256)),
     transforms.ToTensor()
 ])
 

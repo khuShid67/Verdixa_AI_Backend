@@ -17,7 +17,6 @@ for _, row in df.iterrows():
         "severity": str(row["Severity"]),
         "description": str(row["Description"]),
 
-        # ✅ FIX: convert to list
         "symptoms": [
             s.strip()
             for s in str(row["Symptoms"]).split(",")

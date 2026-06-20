@@ -29,7 +29,7 @@ feature_model.classifier = nn.Identity()
 feature_model.eval()
 
 transform = transforms.Compose([
-    transforms.Resize((300, 300)),
+    transforms.Resize((256, 256)),
     transforms.ToTensor()
 ])
 
@@ -82,10 +82,6 @@ def predict_leaf(image_path):
         disease_name = disease_name.replace("_", " ")
 
         nearest_diseases.append(disease_name)
-
-    # --------------------------------
-    # Unknown Disease Detection
-    # --------------------------------
 
     nearest_distance = float(distances[0][0])
 

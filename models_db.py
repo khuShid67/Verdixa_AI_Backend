@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, Float, Text, DateTime
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Float, Text, DateTime
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
 from datetime import datetime
@@ -21,11 +21,11 @@ class DetectionHistory(Base):
 
     id = Column(Integer, primary_key=True)
 
-    user_email = Column(String(255))  # MUST exist
+    user_email = Column(String(255), nullable= False) 
 
-    disease_name = Column(String(255))
-    confidence = Column(Float)
-    status = Column(String(100))
+    disease_name = Column(String(255), nullable=False)
+    confidence = Column(Float, nullable=False)
+    status = Column(String(100), nullable=False)
 
-    image_path = Column(String(255))
+    image_path = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
